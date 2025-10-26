@@ -226,9 +226,11 @@ elif st.session_state.phase == "chat":
                 st.session_state.kundin_phase = "fertig"
                 st.rerun()
 
-
     # ✅ Abschlussphase: Verhandlung beendet
-    if any(("nehme Ihr Angebot" in m["text"]) or ("Ich stimme" in m["text"]) for m in st.session_state.chat):
+    if (
+        ("kundin_phase" in st.session_state and st.session_state.kundin_phase == "fertig")
+        or any(("nehme Ihr Angebot" in m["text"]) or ("Ich stimme" in m["text"]) for m in st.session_state.chat)
+    ):
         # Kurze Pause, damit letzte Nachricht sichtbar bleibt
         time.sleep(1.5)
 
@@ -237,6 +239,7 @@ elif st.session_state.phase == "chat":
         if st.button("Weiter zum Fragebogen"):
             st.session_state.phase = "survey"
             st.rerun()
+
 
 # ---------------------------------------------
 # PHASE 4: FRAGEBOGEN
