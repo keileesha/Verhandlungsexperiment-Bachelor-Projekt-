@@ -185,7 +185,7 @@ elif st.session_state.phase == "chat":
                 del st.session_state.verzoegert_start
 
         # 💬 3️⃣ Gegenverhandlung
-         elif tempo == "gegenverhandlung":
+        elif tempo == "gegenverhandlung":
             # 1️⃣ Kundin macht Gegenangebot
             if not any("430" in m["text"] for m in st.session_state.chat):
                 with st.spinner("Kundin tippt..."):
