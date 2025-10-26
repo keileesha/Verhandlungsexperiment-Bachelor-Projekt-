@@ -152,30 +152,30 @@ elif st.session_state.phase == "chat":
                 st.session_state.response_time_ms = int((time.time() - st.session_state.start_ts)*1000)
     elif tempo == "verzoegert":
     # 1️⃣ Wenn Kundin noch nicht reagiert hat, erste Nachricht senden
-    if "verzoegert_phase" not in st.session_state:
-        add_msg("Kundin", "Hm... ich muss kurz nachdenken...")
-        st.session_state.verzoegert_phase = "waiting"
-        st.session_state.verzoegert_start = time.time()
-        st.rerun()
+        if "verzoegert_phase" not in st.session_state:
+            add_msg("Kundin", "Hm... ich muss kurz nachdenken...")
+            st.session_state.verzoegert_phase = "waiting"
+            st.session_state.verzoegert_start = time.time()
+            st.rerun()
 
     # 2️⃣ Während der Wartezeit: nichts tun, nur anzeigen, dass Kundin tippt
-    elif st.session_state.verzoegert_phase == "waiting":
-        elapsed = time.time() - st.session_state.verzoegert_start
+        elif st.session_state.verzoegert_phase == "waiting":
+            elapsed = time.time() - st.session_state.verzoegert_start
 
         # Anzeige: „Kundin tippt...“ während der 10 Sekunden
-        with st.spinner("💬 Kundin tippt..."):
-            if elapsed < 10:
-                time.sleep(1)
-                st.rerun()
+            with st.spinner("💬 Kundin tippt..."):
+                if elapsed < 10:
+                    time.sleep(1)
+                    st.rerun()
 
         # Nach Ablauf von 10 Sekunden: zweite Nachricht senden
-        add_msg("Kundin", "Okay, ich nehme Ihr Angebot an.")
-        st.session_state.response_time_ms = int((time.time() - st.session_state.start_ts)*1000)
-        st.session_state.reacted = True
+            add_msg("Kundin", "Okay, ich nehme Ihr Angebot an.")
+            st.session_state.response_time_ms = int((time.time() - st.session_state.start_ts)*1000)
+            st.session_state.reacted = True
 
         # Flags löschen, damit die Phase sauber zurückgesetzt wird
-        del st.session_state.verzoegert_phase
-        del st.session_state.verzoegert_start
+            del st.session_state.verzoegert_phase
+            del st.session_state.verzoegert_start
 
     if tempo == "gegenverhandlung" and not any("430" in m["text"] for m in st.session_state.chat):
         with st.spinner("Kundin tippt..."):
