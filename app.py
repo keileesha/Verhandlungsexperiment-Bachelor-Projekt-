@@ -186,15 +186,21 @@ elif st.session_state.phase == "chat":
 
         # 💬 3️⃣ Gegenverhandlung
         elif tempo == "gegenverhandlung":
+
+            # Initiale Phase setzen
+            if "kundin_phase" not in st.session_state:
+                st.session_state.kundin_phase = "start"
+
             # 1️⃣ Kundin macht Gegenangebot
-            if not any("430" in m["text"] for m in st.session_state.chat):
+            if st.session_state.kundin_phase == "start":
                 with st.spinner("Kundin tippt..."):
                     time.sleep(7)
                 add_msg("Kundin", "Wäre 430 € auch möglich?")
+                st.session_state.kundin_phase = "warte_auf_antwort"
                 st.rerun()
 
             # 2️⃣ Anbieter:in antwortet manuell auf Gegenangebot
-            elif any("430" in m["text"] for m in st.session_state.chat) and not any("bestes" in m["text"].lower() for m in st.session_state.chat):
+            elif st.session_state.kundin_phase == "warte_auf_antwort":
                 st.markdown("#### 💬 Ihre Antwort auf das Gegenangebot")
                 neues_angebot = st.number_input(
                     "Geben Sie Ihr (ggf. angepasstes) Gegenangebot ein:",
@@ -207,17 +213,19 @@ elif st.session_state.phase == "chat":
                 if st.button("Antwort senden"):
                     add_msg("Sie", f"{int(neues_angebot)} € ist mein bestes Angebot.")
                     st.session_state.angebot = neues_angebot
-                    st.session_state.reacted = False  # wichtig, damit Kundin danach noch antwortet kann
-                    st.session_state.user_replied = True  # Flag für Kontrolle
+                    st.session_state.kundin_phase = "kundin_reaktion"
                     st.rerun()
 
             # 3️⃣ Kundin akzeptiert nach kurzer Überlegung
-            elif any("bestes" in m["text"].lower() for m in st.session_state.chat) and not any("stimme" in m["text"].lower() for m in st.session_state.chat):
+            elif st.session_state.kundin_phase == "kundin_reaktion":
                 with st.spinner("Kundin tippt..."):
                     time.sleep(7)
                 add_msg("Kundin", "In Ordnung, ich stimme zu.")
                 st.session_state.response_time_ms = int((time.time() - st.session_state.start_ts) * 1000)
                 st.session_state.reacted = True
+                st.session_state.kundin_phase = "fertig"
+                st.rerun()
+
 
     # ✅ Abschlussphase: Verhandlung beendet
     if any(("nehme Ihr Angebot" in m["text"]) or ("Ich stimme" in m["text"]) for m in st.session_state.chat):
