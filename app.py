@@ -53,7 +53,7 @@ init_state()
 st.title("💬 Verhandlungsexperiment: „Zu schnell, zu schade?“")
 
 # ---------------------------------------------
-# PHASE 1: EINVERSTÄNDNISERKLÄRUNG
+# PHASE 1: EINVERSTÄNDNISERKLÄRUNG & ERKLÄRUNG ZUR AUFGABE
 # ---------------------------------------------
 if st.session_state.phase == "consent":
     st.markdown("""
@@ -62,19 +62,26 @@ if st.session_state.phase == "consent":
     Sie nehmen an einer kurzen, anonymen Studie zu Verhandlungen teil (Dauer ca. 10 Minuten).
     Die Gegenseite ist simuliert. Es werden keine personenbezogenen Daten erhoben.
 
-    **Hinweis:**  
-    In dieser Studie wird Ihnen möglicherweise eine sogenannte *BATNA* beschrieben.  
-    Das steht für *Best Alternative to a Negotiated Agreement* –  
-    also Ihre **beste Alternative**, falls die Verhandlung scheitert.  
-    Eine *starke BATNA* bedeutet, dass Sie ein gutes alternatives Angebot haben.  
-    Eine *schwache BATNA* bedeutet, dass Sie keine Alternative haben.
-
     *Ich stimme der anonymen Datenerhebung zu und kann jederzeit abbrechen.*
     """)
     if st.button("Zustimmen und starten"):
-        st.session_state.phase = "scenario"
+        st.session_state.phase = "intro_batna"
         st.rerun()
 
+elif st.session_state.phase == "intro_batna":
+    st.markdown("""
+    **Hinweis zur Aufgabe**
+
+    In dieser Studie wird Ihnen eine sogenannte *BATNA* beschrieben.  
+    Das steht für *Best Alternative to a Negotiated Agreement* –  
+    also Ihre **beste Alternative**, falls die Verhandlung scheitert.  
+
+    Eine *starke BATNA* bedeutet: Sie haben ein gutes alternatives Angebot.  
+    Eine *schwache BATNA* bedeutet: Sie haben keine Alternative und sind stärker vom aktuellen Angebot abhängig.
+    """)
+    if st.button("Weiter"):
+        st.session_state.phase = "scenario"
+        st.rerun()
 # ---------------------------------------------
 # PHASE 2: SZENARIO / BATNA
 # ---------------------------------------------
