@@ -119,7 +119,7 @@ elif st.session_state.phase == "chat":
             elif tempo == "verzoegert":
                 time.sleep(10)
                 add_msg("Kundin", "Hm... ich muss kurz nachdenken...")
-                st.experimental_rerun()
+              st.rerun()
             st.session_state.reacted = True
             st.rerun()
 
