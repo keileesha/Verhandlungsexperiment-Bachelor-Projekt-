@@ -57,13 +57,20 @@ st.title("💬 Verhandlungsexperiment: „Zu schnell, zu schade?“")
 # ---------------------------------------------
 if st.session_state.phase == "consent":
     st.markdown("""
-**Kurzinfo & Einwilligung**
+    **Kurzinfo & Einwilligung**
 
-Sie nehmen an einer kurzen, anonymen Studie zu Verhandlungen teil (Dauer ca. 10 Minuten).
-Die Gegenseite ist simuliert. Es werden keine personenbezogenen Daten erhoben.
+    Sie nehmen an einer kurzen, anonymen Studie zu Verhandlungen teil (Dauer ca. 10 Minuten).
+    Die Gegenseite ist simuliert. Es werden keine personenbezogenen Daten erhoben.
 
-*Ich stimme der anonymen Datenerhebung zu und kann jederzeit abbrechen.*
-""")
+    **Hinweis:**  
+    In dieser Studie wird Ihnen möglicherweise eine sogenannte *BATNA* beschrieben.  
+    Das steht für *Best Alternative to a Negotiated Agreement* –  
+    also Ihre **beste Alternative**, falls die Verhandlung scheitert.  
+    Eine *starke BATNA* bedeutet, dass Sie ein gutes alternatives Angebot haben.  
+    Eine *schwache BATNA* bedeutet, dass Sie keine Alternative haben.
+
+    *Ich stimme der anonymen Datenerhebung zu und kann jederzeit abbrechen.*
+    """)
     if st.button("Zustimmen und starten"):
         st.session_state.phase = "scenario"
         st.rerun()
