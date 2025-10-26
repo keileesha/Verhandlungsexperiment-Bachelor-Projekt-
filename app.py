@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import random, time, os
 from datetime import datetime
+import gspread
+from google.oauth2.service_account import Credentials
 
 # ---------------------------------------------
 # SEITENKONFIGURATION
@@ -37,14 +39,23 @@ def add_msg(speaker, text):
 def ensure_data_dir():
     """Erstellt bei Bedarf den Ordner 'data' für Ergebnisdateien."""
     os.makedirs("data", exist_ok=True)
+# --- Verbindung zu Google Sheets ---
+SCOPE = ["https://www.googleapis.com/auth/spreadsheets"]
+creds = Credentials.from_service_account_info(st.secrets["gcp_service_account"], scopes=SCOPE)
+client = gspread.authorize(creds)
+
+# Deine Google-Sheet-ID aus der URL:
+SHEET_ID = "1kAljwsbwhl6U4EjBJK-VVIZlLsQzTKD-So36l7ULXkw"
+sheet = client.open_by_key(SHEET_ID).sheet1
 
 def save_row(row):
-    """Speichert eine Teilnahme als Zeile in results.csv."""
-    ensure_data_dir()
-    path = "data/results.csv"
-    df = pd.DataFrame([row])
-    header_needed = not os.path.exists(path)
-    df.to_csv(path, mode="a", index=False, header=header_needed)
+    """Speichert eine Teilnahme als Zeile in Google Sheets."""
+    try:
+        # Werte in der Reihenfolge der Keys extrahieren
+        values = [row[k] for k in row.keys()]
+        sheet.append_row(values)
+    except Exception as e:
+        st.error(f"❌ Fehler beim Speichern in Google Sheets: {e}")
 
 # ---------------------------------------------
 # APP-START
