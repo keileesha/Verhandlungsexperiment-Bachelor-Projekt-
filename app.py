@@ -119,9 +119,9 @@ elif st.session_state.phase == "chat":
             elif tempo == "verzoegert":
                 time.sleep(10)
                 add_msg("Kundin", "Hm... ich muss kurz nachdenken...")
-              st.rerun()
-            st.session_state.reacted = True
-            st.rerun()
+                st.rerun()
+                st.session_state.reacted = True
+                st.rerun()
 
     if tempo == "verzoegert" and len([m for m in st.session_state.chat if m["speaker"]=="Kundin"])==1:
         with st.spinner("Kundin tippt..."):
