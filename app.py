@@ -150,7 +150,7 @@ elif st.session_state.phase == "chat":
                 time.sleep(1)
                 add_msg("Kundin", "Das klingt super, ich nehme Ihr Angebot direkt an!")
                 st.session_state.response_time_ms = int((time.time() - st.session_state.start_ts)*1000)
-  elif tempo == "verzoegert":
+    elif tempo == "verzoegert":
     # 1️⃣ Wenn Kundin noch nicht reagiert hat, erste Nachricht senden
     if "verzoegert_phase" not in st.session_state:
         add_msg("Kundin", "Hm... ich muss kurz nachdenken...")
