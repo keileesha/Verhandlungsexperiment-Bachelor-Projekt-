@@ -88,26 +88,35 @@ elif st.session_state.phase == "intro_batna":
 elif st.session_state.phase == "scenario":
     batna = st.session_state.batna
 
-    if batna == "stark":
-        st.markdown("""
-**Szenario (Ihre Rolle: Anbieter:in)**  
-Sie sind Freelancer:in (Grafikdesign). Sie möchten für ein Projekt **450 €** verlangen.  
-Sie haben eine **starke Alternative (BATNA)**: Ein anderes Projekt über **440 €** ist in Aussicht.
-        """)
-    else:
-        st.markdown("""
-**Szenario (Ihre Rolle: Anbieter:in)**  
-Sie sind Freelancer:in (Grafikdesign). Sie möchten für ein Projekt **450 €** verlangen.  
-Sie haben eine **schwache/unsichere Alternative (BATNA)**: Aktuell kein weiteres konkretes Angebot.
-        """)
+    st.markdown("""
+    **Szenario (Ihre Rolle: Anbieter:in)**  
+    Sie sind Freelancer:in (Grafikdesign).  
+    Sie möchten für ein Projekt einen **angemessenen Betrag** verlangen,  
+    den Sie selbst festlegen können.  
 
-    st.session_state.angebot = st.number_input("Ihr Angebot (€):", min_value=100, max_value=2000, value=450, step=10)
+    Je nach Situation haben Sie eine unterschiedliche Ausgangslage (BATNA):
+    """)
+
+    if batna == "stark":
+        st.info("Sie haben eine **starke BATNA**: Ein anderes Projekt über 440 € ist in Aussicht.")
+    else:
+        st.info("Sie haben eine **schwache/unsichere BATNA**: Aktuell kein weiteres konkretes Angebot.")
+    
+    st.session_state.angebot = st.number_input(
+        "Ihr Angebot (€):",
+        min_value=100,
+        max_value=2000,
+        step=10,
+        placeholder="Bitte Betrag eingeben"
+    )
+
     if st.button("Angebot im Chat senden"):
         st.session_state.phase = "chat"
         st.session_state.chat = []
         add_msg("Sie", f"Ich könnte das Projekt für {int(st.session_state.angebot)} € übernehmen.")
         st.session_state.start_ts = time.time()
         st.rerun()
+
 
 # ---------------------------------------------
 # PHASE 3: CHAT
