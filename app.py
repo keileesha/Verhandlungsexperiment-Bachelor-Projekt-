@@ -148,6 +148,8 @@ elif st.session_state.phase == "chat":
 
     # Nur reagieren, wenn noch keine Antwort kam
     if not st.session_state.reacted:
+
+        # 💬 1️⃣ Sofortige Annahme
         if tempo == "sofort":
             with st.spinner("Kundin tippt..."):
                 time.sleep(1)
@@ -155,6 +157,7 @@ elif st.session_state.phase == "chat":
             st.session_state.response_time_ms = int((time.time() - st.session_state.start_ts) * 1000)
             st.session_state.reacted = True
 
+        # 💬 2️⃣ Verzögerte Annahme
         elif tempo == "verzoegert":
             # Wenn Kundin noch nicht reagiert hat, erste Nachricht senden
             if "verzoegert_phase" not in st.session_state:
@@ -181,6 +184,7 @@ elif st.session_state.phase == "chat":
                 del st.session_state.verzoegert_phase
                 del st.session_state.verzoegert_start
 
+        # 💬 3️⃣ Gegenverhandlung
         elif tempo == "gegenverhandlung":
             # 1️⃣ Gegenangebot von Kundin, falls noch kein Gegenangebot vorliegt
             if not any("430" in m["text"] for m in st.session_state.chat):
@@ -203,9 +207,13 @@ elif st.session_state.phase == "chat":
                 st.session_state.response_time_ms = int((time.time() - st.session_state.start_ts) * 1000)
                 st.session_state.reacted = True
 
-    # Wenn Verhandlung abgeschlossen ist → Feedbackphase
+    # ✅ Abschlussphase: Verhandlung beendet
     if any(("nehme Ihr Angebot" in m["text"]) or ("Ich stimme" in m["text"]) for m in st.session_state.chat):
+        # Kurze Pause, damit letzte Nachricht sichtbar bleibt
+        time.sleep(1.5)
+
         st.success("✅ Die Verhandlung ist abgeschlossen.")
+
         if st.button("Weiter zum Fragebogen"):
             st.session_state.phase = "survey"
             st.rerun()
