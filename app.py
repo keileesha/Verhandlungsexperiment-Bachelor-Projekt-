@@ -80,15 +80,17 @@ if st.session_state.phase == "consent":
         st.rerun()
 
 elif st.session_state.phase == "intro_batna":
-    st.markdown("""
-    **Hinweis zur Aufgabe**
-
-    In dieser Studie wird Ihnen eine sogenannte *BATNA* beschrieben.  
-    Das steht für *Best Alternative to a Negotiated Agreement* –  
-    also Ihre **beste Alternative**, falls die Verhandlung scheitert.  
-
-    Eine *starke BATNA* bedeutet: Sie haben ein gutes alternatives Angebot.  
-    Eine *schwache BATNA* bedeutet: Sie haben keine Alternative und sind stärker vom aktuellen Angebot abhängig.
+   st.markdown("""
+    **Szenario (Ihre Rolle: Anbieter:in)**  
+    Sie sind Freelancer:in (Grafikdesign).  
+    Sie möchten für ein Projekt einen **angemessenen Betrag** verlangen,  
+    den Sie selbst festlegen können. 
+    
+    Üblicherweise bewegen sich Grafikdesign-Projektpreise im Bereich von  
+    **350 € bis 500 €**, abhängig von Umfang, Erfahrung und Qualität.  
+    Wenn Sie deutlich **höher** ansetzen, steigt die Wahrscheinlichkeit,  
+    dass die Kundin das Angebot ablehnt.  
+    Wenn Sie deutlich **niedriger** ansetzen, könnte die Arbeit **unterbezahlt** sein.
     """)
     if st.button("Weiter"):
         st.session_state.phase = "scenario"
