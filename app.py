@@ -80,7 +80,7 @@ if st.session_state.phase == "consent":
         st.rerun()
 
 elif st.session_state.phase == "intro_batna":
-   st.markdown("""
+    st.markdown("""
     **Szenario (Ihre Rolle: Anbieter:in)**  
     Sie sind Freelancer:in (Grafikdesign).  
     Sie möchten für ein Projekt einen **angemessenen Betrag** verlangen,  
